@@ -60,7 +60,7 @@ class UsomUrlHelper:
             try:
                 ip_address = socket.gethostbyname(blocked_url.url_name)
                 if not ip_address:
-                    print(Fore.YELLOW + "bu ne aq " + blocked_url.url_name)
+                    print(Fore.YELLOW + blocked_url.url_name)
                 blocked_url.ip = ip_address                    
                 print(Fore.GREEN + "Url:" + blocked_url.url_name + " Ip:" + blocked_url.ip)                             
             except:
