@@ -21,7 +21,7 @@ class UsomUrlHelper:
                 is_ip = self.check_ip(url_name)
                 if is_ip is True:
                     continue            
-                blocked_url = BlockedUrl(url_name, '')
+                blocked_url = BlockedUrl(url_name, '', False)
                 self.blocked_url_list.append(blocked_url)
         except:
             print("Url not open")
@@ -61,10 +61,13 @@ class UsomUrlHelper:
                 ip_address = socket.gethostbyname(blocked_url.url_name)
                 if not ip_address:
                     print(Fore.YELLOW + blocked_url.url_name)
-                blocked_url.ip = ip_address                    
+                    blocked_url.is_active = False
+                blocked_url.ip = ip_address
+                blocked_url.is_active = True                    
                 print(Fore.GREEN + "Url:" + blocked_url.url_name + " Ip:" + blocked_url.ip)                             
             except:
-                print(Fore.RED + "Url: " +blocked_url.url_name + " IP Address not found")
+                blocked_url.is_active = False
+                print(Fore.RED + "Url:" +blocked_url.url_name + " IP Address not found")
                 continue
                             
         
