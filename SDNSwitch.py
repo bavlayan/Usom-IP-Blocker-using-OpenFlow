@@ -3,8 +3,7 @@ from ryu.controller import ofp_event
 from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
 from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
-from ryu.lib.packet import packet
-from ryu.lib.packet import ethernet
+from ryu.lib.packet import ethernet, packet
 
 
 class SDNHub(app_manager.RyuApp):
@@ -58,10 +57,11 @@ class SDNHub(app_manager.RyuApp):
         # get the received port number from packet_in message.
         in_port = msg.match['in_port']
 
-        self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
+        #self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
 
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[dpid][src] = in_port
+        self.logger.info("Switch Id: " + str(dpid))
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
@@ -76,6 +76,7 @@ class SDNHub(app_manager.RyuApp):
         # install a flow to avoid packet_in next time.
         if out_port != ofproto.OFPP_FLOOD:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
+            self.logger.info("Hayırlısı be gülüm!")
             self.add_flow(datapath, 1, match, actions)
 
         # construct packet_out message and send it.
