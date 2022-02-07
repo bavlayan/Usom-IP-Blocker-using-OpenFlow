@@ -29,7 +29,6 @@ class SDNHub(app_manager.RyuApp):
     def add_flow(self, datapath, priority, match, actions):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
-
         # construct flow_mod message and send it.
         inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
                                              actions)]
@@ -76,7 +75,6 @@ class SDNHub(app_manager.RyuApp):
         # install a flow to avoid packet_in next time.
         if out_port != ofproto.OFPP_FLOOD:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
-            self.logger.info("Hayırlısı be gülüm!")
             self.add_flow(datapath, 1, match, actions)
 
         # construct packet_out message and send it.
