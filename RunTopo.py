@@ -1,6 +1,4 @@
-from subprocess import call
-
-from UsomUrlHelper import UsomUrlHelper
+import Constants
 from MyToplogy import MyToplogy
 
 #-------------------- Mininet packages --------------------
@@ -12,25 +10,13 @@ from mininet.node import RemoteController, OVSKernelSwitch
 from mininet.link import TCLink, OVSLink
 #-------------------- Mininet packages --------------------
 
-
-#-------------------- CONSTANTS --------------------
-CONTROLLER_IP = '127.0.0.1'
-CONTROLLER_PORT = 6653
-OPENFLOW_PROTOCOL = 'OpenFlow13'
-#-------------------- CONSTANTS --------------------
-
-def create_blocked_url_list():
-    usomurlhelper = UsomUrlHelper()
-    usomurlhelper.get_blocked_urls_from_usom()
-    usomurlhelper.set_ip()
-
-def topo_test():
+def run_topo():
     topo = MyToplogy(4)
     net = Mininet(topo, build=False)
    
-    net.addController(name='c0', controller=RemoteController, link=OVSLink, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
+    net.addController(name='c0', controller=RemoteController, link=OVSLink, ip=Constants.CONTROLLER_IP, port=Constants.CONTROLLER_PORT)
     net.start()
-    #net.addNAT().configDefault()
+    net.addNAT().configDefault()
     print("Dumping host connections")
     dumpNodeConnections(net.hosts)
     print("Testing network connectivity")
@@ -40,6 +26,4 @@ def topo_test():
 
 if __name__ == "__main__":
     setLogLevel('info')
-    topo_test()
-
-    
+    run_topo()

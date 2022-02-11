@@ -1,12 +1,12 @@
+import Constants
+
 from mininet.topo import Topo
 from mininet.node import OVSKernelSwitch
 from functools import partial
 
 class MyToplogy(Topo):
-    
     def __init__(self, host_count=4, switch_count=3):
         Topo.__init__(self)
-        self.DPID_PREFIX = 10000
         self.host_count = host_count
         self.switch_count = switch_count
         self.host_list = []       
@@ -25,7 +25,7 @@ class MyToplogy(Topo):
         OpenFlow14Switch = partial(OVSKernelSwitch, protocols='OpenFlow13')
         for i in range(self.switch_count):
             switch_name = 's%s' % (i + 1)
-            switch_dpid = self.DPID_PREFIX + i + 1
+            switch_dpid = Constants.DPID_PREFIX + i + 1
             switch = self.addSwitch(switch_name, cls=OpenFlow14Switch, dpid="%x" % switch_dpid)
             self.switch_list.append(switch)
 
