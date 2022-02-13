@@ -24,3 +24,12 @@ sudo ryu-manager SDNSwitch.py
 ```bash
 sudo python3 MyTopology.py
 ```
+### Test - 1
+When we send ping a command to google.com (216.58.207.227) over host h1, we can see connection that is alive. Also, we can analyze logs of S1 Switch, number of packets increase.
+
+![ping-google Image](ping-google.png)
+
+### Test - 2
+When we send ping a command to gohtci.com (64.111.117.54) over host h2, we can see connection that is not alive. Also, we can analyze logs of S1 Switch, number of packets increase and flow action is drop.
+
+![ping-google Image](ping-gotchi.png)
