@@ -11,3 +11,16 @@ The aim of Usom IP Blocker project prevents all packets that request from host t
 
 ### Topology Structure
 ![Topo Image](Topo.png)
+
+
+## Start Setup
+
+### SDN Controller
+```bash
+sudo ryu-manager SDNSwitch.py
+```
+
+### Mininet Topology
+```bash
+sudo python3 MyTopology.py
+```
