@@ -22,7 +22,7 @@ class SDNHub(app_manager.RyuApp):
         # initialize mac address table.
         self.mac_to_port = {}
         self.blocked_url_array = []
-        self.load_json()
+        self.__load_json()
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -85,10 +85,8 @@ class SDNHub(app_manager.RyuApp):
         # construct action list.
         actions = [parser.OFPActionOutput(out_port)]
 
-        # install a flow to avoid packet_in next time.
         if dpid == Constants.FIREWALL_SWITCH_ID:
             for index, blocked_url in enumerate(self.blocked_url_array):
-                self.logger.info("added droped packed: %s --- %s", blocked_url.url_name, blocked_url.ip)
                 if pkt_ipv4 and (pkt_ipv4.src == blocked_url.ip or pkt_ipv4.dst == blocked_url.ip):
                     default_match_1 = parser.OFPMatch(
                         eth_type=ether_types.ETH_TYPE_IP,

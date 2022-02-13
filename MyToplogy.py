@@ -12,16 +12,16 @@ class MyToplogy(Topo):
         self.host_list = []       
         self.switch_list =  []
 
-        self.create_switch()
-        self.create_host()
-        self.create_link()
+        self.__create_switch()
+        self.__create_host()
+        self.__create_link()
     
-    def create_host(self):
+    def __create_host(self):
         for i in range(self.host_count):
             created_host = self.addHost('h%s' % (i + 1))
             self.host_list.append(created_host)
 
-    def create_switch(self):
+    def __create_switch(self):
         OpenFlow14Switch = partial(OVSKernelSwitch, protocols='OpenFlow13')
         for i in range(self.switch_count):
             switch_name = 's%s' % (i + 1)
@@ -29,14 +29,11 @@ class MyToplogy(Topo):
             switch = self.addSwitch(switch_name, cls=OpenFlow14Switch, dpid="%x" % switch_dpid)
             self.switch_list.append(switch)
 
-    def create_link(self):
+    def __create_link(self):
         self.addLink('h1', 's2')
         self.addLink('h2', 's2')
         self.addLink('h3', 's3')
         self.addLink('h4', 's3')
 
         self.addLink('s2', 's1')
-        self.addLink('s3', 's1')
-    
-
-        
+        self.addLink('s3', 's1')   

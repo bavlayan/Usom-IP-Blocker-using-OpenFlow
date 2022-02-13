@@ -6,8 +6,8 @@ from mininet.net import Mininet
 from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel
 from mininet.cli import CLI
-from mininet.node import RemoteController, OVSKernelSwitch
-from mininet.link import TCLink, OVSLink
+from mininet.node import RemoteController
+from mininet.link import OVSLink
 #-------------------- Mininet packages --------------------
 
 def run_topo():
@@ -20,7 +20,6 @@ def run_topo():
     print("Dumping host connections")
     dumpNodeConnections(net.hosts)
     print("Testing network connectivity")
-    net.pingAll()
     CLI(net)
     net.stop()
 

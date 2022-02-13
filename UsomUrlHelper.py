@@ -1,4 +1,3 @@
-import imp
 from typing import Container
 import urllib.request
 import re
@@ -13,16 +12,16 @@ import Constants
 
 class UsomUrlHelper:   
     def __init__(self):
-        self.thread_count = 8
+        self.thread_count = 2
         self.blocked_url_list = []
-        self.usom_url = Constants
+        self.usom_url = Constants.USOM_URL
 
     def __get_blocked_urls_from_usom(self):
         try:
             response = urllib.request.urlopen(self.usom_url, timeout=3)
             for url in response:
                 url_name = url.decode("utf-8").rstrip("\n")
-                is_ip = self.check_ip(url_name)
+                is_ip = self.__check_ip(url_name)
                 if is_ip is True:
                     continue            
                 blocked_url = BlockedUrl(url_name, '', False)
@@ -41,14 +40,13 @@ class UsomUrlHelper:
     def __set_ip(self):
         try:
             thread_arr = []
-            last_index = 0
-            self.blocked_url_list = self.blocked_url_list[:8]
             loop_last_index = int(len(self.blocked_url_list) / self.thread_count)
-            for i in range(loop_last_index):
-                last_index = last_index + self.thread_count
-                first_index = int(i * self.thread_count)
-                partial_blocked_list = self.blocked_url_list[first_index:last_index]
-                t = threading.Thread(target=self.get_ip_from_url, args=(partial_blocked_list,))
+            first_index = 0
+            for i in range(self.thread_count):
+                partial_blocked_list = self.blocked_url_list[first_index:loop_last_index]
+                first_index = loop_last_index
+                loop_last_index = loop_last_index * 2
+                t = threading.Thread(target=self.__get_ip_from_url, args=(partial_blocked_list,))
                 thread_arr.append(t)
 
             for t in thread_arr:
@@ -78,7 +76,7 @@ class UsomUrlHelper:
                     blocked_url.is_active = False
                     self.blocked_url_list.remove(blocked_url)
 
-                if self.is_ip_private(ip_address):
+                if self.__is_ip_private(ip_address):
                     blocked_url.is_active = False
                     self.blocked_url_list.remove(blocked_url)   
 
@@ -91,8 +89,8 @@ class UsomUrlHelper:
                 continue
 
     def create_json_file(self):
-        self.get_blocked_urls_from_usom()
-        self.set_ip()
+        self.__get_blocked_urls_from_usom()
+        self.__set_ip()
         try:
             with open(Constants.BLOCKED_URL_JSON_FILE_NAME, 'w') as json_file:
                 json.dump(self.blocked_url_list, json_file, default=vars)
@@ -100,3 +98,7 @@ class UsomUrlHelper:
         except:
             print(Fore.RED + "An error occured when creating " + Constants.BLOCKED_URL_JSON_FILE_NAME + " json file")
 
+
+if __name__ == "__main__":
+    usom_url_helper = UsomUrlHelper()
+    usom_url_helper.create_json_file()
