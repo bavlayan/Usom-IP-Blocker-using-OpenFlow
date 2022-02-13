@@ -4,7 +4,7 @@ from mininet.topo import Topo
 from mininet.node import OVSKernelSwitch
 from functools import partial
 
-class MyToplogy(Topo):
+class MyTopology(Topo):
     def __init__(self, host_count=4, switch_count=3):
         Topo.__init__(self)
         self.host_count = host_count

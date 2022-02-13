@@ -1,5 +1,5 @@
 import Constants
-from MyToplogy import MyToplogy
+from MyTopology import MyTopology
 
 #-------------------- Mininet packages --------------------
 from mininet.net import Mininet
@@ -11,7 +11,7 @@ from mininet.link import OVSLink
 #-------------------- Mininet packages --------------------
 
 def run_topo():
-    topo = MyToplogy(4)
+    topo = MyTopology(4)
     net = Mininet(topo, build=False)
    
     net.addController(name='c0', controller=RemoteController, link=OVSLink, ip=Constants.CONTROLLER_IP, port=Constants.CONTROLLER_PORT)
